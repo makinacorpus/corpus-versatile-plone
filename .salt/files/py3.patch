@@ -1,0 +1,61 @@
+diff -ur Python-2.4.6.orig/Modules/readline.c Python-2.4.6/Modules/readline.c
+--- Python-2.4.6.orig/Modules/readline.c	2006-10-03 20:29:35.000000000 +0200
++++ Python-2.4.6/Modules/readline.c	2014-12-09 10:29:40.984613447 +0100
+@@ -708,12 +708,27 @@
+ 	rl_bind_key_in_map ('\t', rl_complete, emacs_meta_keymap);
+ 	rl_bind_key_in_map ('\033', rl_complete, emacs_meta_keymap);
+ 	/* Set our hook functions */
+-	rl_startup_hook = (Function *)on_startup_hook;
++    rl_startup_hook =
++#if defined(_RL_FUNCTION_TYPEDEF)
++        (rl_hook_func_t *)on_startup_hook;
++#else
++        (Function *)on_startup_hook;
++#endif
+ #ifdef HAVE_RL_PRE_INPUT_HOOK
+-	rl_pre_input_hook = (Function *)on_pre_input_hook;
++    rl_pre_input_hook =
++#if defined(_RL_FUNCTION_TYPEDEF)
++        (rl_hook_func_t *)on_pre_input_hook;
++#else
++        (Function *)on_pre_input_hook;
++#endif
+ #endif
+ 	/* Set our completion function */
+-	rl_attempted_completion_function = (CPPFunction *)flex_complete;
++    rl_attempted_completion_function =
++#if defined(_RL_FUNCTION_TYPEDEF)
++        (rl_completion_func_t *)flex_complete;
++#else
++        (CPPFunction *)flex_complete;
++#endif
+ 	/* Set Python word break characters */
+ 	rl_completer_word_break_characters =
+ 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
+diff -ur Python-2.4.6.orig/setup.py Python-2.4.6/setup.py
+--- Python-2.4.6.orig/setup.py	2006-10-08 19:41:25.000000000 +0200
++++ Python-2.4.6/setup.py	2014-12-09 10:34:43.612287500 +0100
+@@ -268,9 +268,13 @@
+         # be assumed that no additional -I,-L directives are needed.
+         lib_dirs = self.compiler.library_dirs + [
+             '/lib64', '/usr/lib64',
++            '/usr/lib/x86_64-linux-gnu',
++            '/lib/x86_64-linux-gnu',
+             '/lib', '/usr/lib',
+             ]
+-        inc_dirs = self.compiler.include_dirs + ['/usr/include']
++        inc_dirs = self.compiler.include_dirs + ['/usr/include', '/usr/include/ssl',
++                                                 '/usr/include/ncurses', '/usr/include/openssl',
++                                                 '/usr/include/readline']
+         exts = []
+
+         platform = self.get_platform()
+@@ -484,7 +488,7 @@
+         exts.append( Extension('_socket', ['socketmodule.c'],
+                                depends = ['socketmodule.h']) )
+         # Detect SSL support for the socket module (via _ssl)
+-        ssl_incs = find_file('openssl/ssl.h', inc_dirs,
++        ssl_incs = find_file('openssl/ssl.h', inc_dirs, inc_dirs+
+                              ['/usr/local/ssl/include',
+                               '/usr/contrib/ssl/include/'
+                              ]
