@@ -45,7 +45,7 @@ if [ ! -e "${PREFIX}/bin/python" ];then
 # backport zlib from py25
 # patch -Np1 < zlib.diff
 # patch to include our cflags and link options
-cat > build.diff << EOF
+python -c 'import sys;sys.stdout.write("""
 ZGlmZiAtdXIgUHl0aG9uLTIuNC42Lm9yaWcvTW9kdWxlcy9yZWFkbGluZS5jIFB5dGhvbi0yLjQu
 Ni9Nb2R1bGVzL3JlYWRsaW5lLmMKLS0tIFB5dGhvbi0yLjQuNi5vcmlnL01vZHVsZXMvcmVhZGxp
 bmUuYwkyMDA2LTEwLTAzIDIwOjI5OjM1LjAwMDAwMDAwMCArMDIwMAorKysgUHl0aG9uLTIuNC42
@@ -93,8 +93,7 @@ cGVuc3NsL3NzbC5oJywgaW5jX2RpcnMsIGluY19kaXJzKwogICAgICAgICAgICAgICAgICAgICAg
 ICAgICAgICBbJy91c3IvbG9jYWwvc3NsL2luY2x1ZGUnLAogICAgICAgICAgICAgICAgICAgICAg
 ICAgICAgICAgJy91c3IvY29udHJpYi9zc2wvaW5jbHVkZS8nCiAgICAgICAgICAgICAgICAgICAg
 ICAgICAgICAgIF0KCg==
-EOF
-patch -Np1 < build.diff
+""".decode("base64"))' | patch -Np1
     fi
     ./configure ${C_OPTS}
     make
