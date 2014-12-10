@@ -39,7 +39,8 @@
     - output_loglevel: info
   {% else %}
   cmd.run:
-    - name: {{data.py_root}}/bin/buildout -Nc buildout-salt.cfg
+    # create fake eggs first & also use buildout from site packages
+    - name: {{data.py_root}}/bin/buildout -Nc buildout-salt.cfg install zope2 && {{data.py_root}}/bin/buildout -Nc buildout-salt.cfg
     - user: {{cfg.user}}
     - use_vt: true
     - cwd: {{data.zroot}}

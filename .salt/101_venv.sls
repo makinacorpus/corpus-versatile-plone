@@ -82,8 +82,8 @@
   cmd.run:
     - name: |
             . {{data.py_root}}/bin/activate;
-            pip install --no-deps --upgrade setuptools==0.6c11 zc.buildout==1.7.0 "https://github.com/collective/collective.recipe.environment/archive/0.2.0.zip"
-    - onlyif: test -e "{{data.requirements}}" && test "x$({{data.py}}" -c "import collective.recipe.environment";echo $0)" = "x1"
+            pip install --upgrade setuptools==0.6c11 zc.buildout==1.7.0 "https://github.com/collective/collective.recipe.environment/archive/0.2.0.zip"
+    - onlyif: test -e "{{data.requirements}}" && test "x$("{{data.py}}" -c "import collective.recipe.environment";echo $?)" = "x1"
     - cwd: {{data.zroot}}
     - use_vt: true
     - download_cache: {{cfg.data_root}}/cache

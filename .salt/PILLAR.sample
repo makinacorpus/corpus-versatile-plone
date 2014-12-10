@@ -19,8 +19,8 @@ makina-projects.projectname:
     py: "{project_root}/venv/bin/python"
     requirements: "{project_root}/requirements.txt"
     server_aliases: []
-    plone_major: "3.2"
-    plone_ver: "3.2.2"
+    plone_major: "3.3"
+    plone_ver: "3.3.5"
     uinstaller: 'Plone-{plone_ver}-UnifiedInstaller'
     installer_url: "http://launchpad.net/plone/{plone_major}/{plone_ver}/+download/{uinstaller}.tgz"
     plone_arc: '{data_root}/{uinstaller}.tgz'

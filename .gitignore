@@ -1,0 +1,17 @@
+*pyc
+*egg-info
+.installed.cfg
+.mr.developer.cfg
+/bin/
+/buildout-salt.cfg
+/corpus-versatile-plone/
+/develop-eggs/
+/etc/crontab
+/etc/loadbalancing/
+/etc/logrotate.conf
+/etc/prod.cfg
+/etc/supervisor.initd
+/python2.4/
+/var
+/venv/
+
