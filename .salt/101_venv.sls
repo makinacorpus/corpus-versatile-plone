@@ -28,8 +28,7 @@
 {{cfg.name}}-venv:
   virtualenv.managed:
     - name: {{data.py_root}}
-    - download_cache: {{cfg.data_root}}/cache
-    - runas: {{cfg.user}}
+    - pip_download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
     {% if data.py_ver >= 2.5 %}
     - python: /usr/bin/python{{data.py_ver}}
